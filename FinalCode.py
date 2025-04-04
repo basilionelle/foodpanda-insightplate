@@ -112,6 +112,36 @@ plot_layout = {
     'margin': dict(t=30, l=10, r=10, b=10)
 }
 
+# Custom styling for dropdowns
+dropdown_style = {
+    'backgroundColor': 'rgba(255, 255, 255, 0.1)',
+    'border': '1px solid rgba(255, 255, 255, 0.2)',
+    'borderRadius': '10px',
+    'color': 'white'
+}
+
+# Custom styling for dropdown options
+dropdown_options_style = {
+    'backgroundColor': '#0057B7',
+    'color': 'white',
+    'hover': {
+        'backgroundColor': '#0098E5',
+        'color': 'white'
+    }
+}
+
+# Update plot layout with filter-friendly styling
+plot_layout.update({
+    'transition_duration': 500,
+    'hovermode': 'closest',
+    'dragmode': False,
+    'modebar': {
+        'bgcolor': 'rgba(0,0,0,0)',
+        'color': 'white',
+        'activecolor': '#0098E5'
+    }
+})
+
 def create_scatter_map(df):
     # Add latitude and longitude to the dataframe
     df['Latitude'] = df['City'].map(lambda x: city_coords.get(x, (None, None))[0])
@@ -214,6 +244,40 @@ def create_rating_distribution(df, city=None):
     
     return fig
 
+def create_filter_options(df):
+    """Create options for filter dropdowns"""
+    cities = sorted(df['City'].unique())
+    food_types = sorted(df['FoodType'].unique())
+    rating_ranges = ['All', '4.5+', '4.0-4.4', '3.5-3.9', 'Below 3.5']
+    
+    return {
+        'cities': [{'label': city, 'value': city} for city in cities],
+        'food_types': [{'label': food_type, 'value': food_type} for food_type in food_types],
+        'rating_ranges': [{'label': rating, 'value': rating} for rating in rating_ranges]
+    }
+
+def filter_dataframe(df, city=None, food_type=None, rating_range=None):
+    """Filter dataframe based on selected criteria"""
+    filtered_df = df.copy()
+    
+    if city and city != 'All':
+        filtered_df = filtered_df[filtered_df['City'] == city]
+    
+    if food_type and food_type != 'All':
+        filtered_df = filtered_df[filtered_df['FoodType'] == food_type]
+    
+    if rating_range and rating_range != 'All':
+        if rating_range == '4.5+':
+            filtered_df = filtered_df[filtered_df['AverageRating'] >= 4.5]
+        elif rating_range == '4.0-4.4':
+            filtered_df = filtered_df[(filtered_df['AverageRating'] >= 4.0) & (filtered_df['AverageRating'] < 4.5)]
+        elif rating_range == '3.5-3.9':
+            filtered_df = filtered_df[(filtered_df['AverageRating'] >= 3.5) & (filtered_df['AverageRating'] < 4.0)]
+        else:  # Below 3.5
+            filtered_df = filtered_df[filtered_df['AverageRating'] < 3.5]
+    
+    return filtered_df
+
 # Initialize the Dash app
 if IN_COLAB:
     app = JupyterDash(__name__, external_stylesheets=[dbc.themes.FLATLY])
@@ -227,6 +291,47 @@ app.layout = dbc.Container([
         html.P('Interactive Dashboard for Restaurant Data Analysis', 
                style={'color': 'white', 'opacity': '0.7', 'margin-bottom': '2rem'}),
         
+        # Filter Section
+        dbc.Row([
+            dbc.Col([
+                dbc.Card([
+                    dbc.CardBody([
+                        html.H4('Filters', style=title_style),
+                        dbc.Row([
+                            dbc.Col([
+                                html.Label('City', style={'color': 'white', 'margin-bottom': '0.5rem'}),
+                                dcc.Dropdown(
+                                    id='city-filter',
+                                    options=[{'label': 'All Cities', 'value': 'All'}],
+                                    value='All',
+                                    style=dropdown_style
+                                )
+                            ], width=4),
+                            dbc.Col([
+                                html.Label('Food Type', style={'color': 'white', 'margin-bottom': '0.5rem'}),
+                                dcc.Dropdown(
+                                    id='food-type-filter',
+                                    options=[{'label': 'All Types', 'value': 'All'}],
+                                    value='All',
+                                    style=dropdown_style
+                                )
+                            ], width=4),
+                            dbc.Col([
+                                html.Label('Rating', style={'color': 'white', 'margin-bottom': '0.5rem'}),
+                                dcc.Dropdown(
+                                    id='rating-filter',
+                                    options=[{'label': 'All Ratings', 'value': 'All'}],
+                                    value='All',
+                                    style=dropdown_style
+                                )
+                            ], width=4),
+                        ], className='g-2')
+                    ])
+                ], style=card_style)
+            ], width=12)
+        ], className='mb-4'),
+        
+        # Map Section
         dbc.Row([
             dbc.Col([
                 dbc.Card([
@@ -238,6 +343,7 @@ app.layout = dbc.Container([
             ], width=12)
         ]),
         
+        # Charts Section
         dbc.Row([
             dbc.Col([
                 dbc.Card([
@@ -257,40 +363,73 @@ app.layout = dbc.Container([
                 ], style=card_style)
             ], width=6)
         ], className='mt-4'),
+        
+        # Stats Row
+        dbc.Row([
+            dbc.Col([
+                dbc.Card([
+                    dbc.CardBody([
+                        html.H4('Quick Stats', style=title_style),
+                        html.Div(id='stats-container', style={'color': 'white'})
+                    ])
+                ], style=card_style)
+            ], width=12)
+        ], className='mt-4'),
+        
     ], style=app_style),
     
-    dcc.Store(id='selected-city')
+    dcc.Store(id='selected-city'),
+    dcc.Store(id='filtered-data')
 ], fluid=True)
 
-# Callbacks
+# Callbacks for filter updates
 @app.callback(
-    Output('selected-city', 'data'),
-    Input('scatter-map', 'clickData')
+    [Output('city-filter', 'options'),
+     Output('food-type-filter', 'options'),
+     Output('rating-filter', 'options')],
+    [Input('filtered-data', 'data')]
 )
-def update_selected_city(clickData):
-    if clickData:
-        return clickData['points'][0]['hovertext']
-    return None
+def update_filters(data):
+    df = pd.read_json(data) if data else load_data()
+    filter_opts = create_filter_options(df)
+    return [
+        [{'label': 'All Cities', 'value': 'All'}] + filter_opts['cities'],
+        [{'label': 'All Types', 'value': 'All'}] + filter_opts['food_types'],
+        [{'label': 'All Ratings', 'value': 'All'}] + filter_opts['rating_ranges']
+    ]
 
 @app.callback(
-    [Output('food-type-chart', 'figure'),
-     Output('rating-chart', 'figure')],
-    Input('selected-city', 'data')
+    [Output('scatter-map', 'figure'),
+     Output('food-type-chart', 'figure'),
+     Output('rating-chart', 'figure'),
+     Output('stats-container', 'children'),
+     Output('filtered-data', 'data')],
+    [Input('city-filter', 'value'),
+     Input('food-type-filter', 'value'),
+     Input('rating-filter', 'value')]
 )
-def update_charts(selected_city):
+def update_dashboard(city, food_type, rating_range):
+    # Load and filter data
     df = load_data()
-    return (
-        create_food_type_distribution(df, selected_city),
-        create_rating_distribution(df, selected_city)
-    )
-
-@app.callback(
-    Output('scatter-map', 'figure'),
-    Input('scatter-map', 'id')
-)
-def update_map(_):
-    df = load_data()
-    return create_scatter_map(df)
+    filtered_df = filter_dataframe(df, city, food_type, rating_range)
+    
+    # Create visualizations
+    map_fig = create_scatter_map(filtered_df)
+    food_type_fig = create_food_type_distribution(filtered_df)
+    rating_fig = create_rating_distribution(filtered_df)
+    
+    # Create stats
+    stats = html.Div([
+        dbc.Row([
+            dbc.Col([
+                html.H5(f"Total Restaurants: {len(filtered_df)}", className='mb-2'),
+                html.H5(f"Average Rating: {filtered_df['AverageRating'].mean():.2f}", className='mb-2'),
+                html.H5(f"Most Common Food Type: {filtered_df['FoodType'].mode()[0]}", className='mb-2')
+            ])
+        ])
+    ])
+    
+    return map_fig, food_type_fig, rating_fig, stats, filtered_df.to_json()
 
 # Custom CSS for the dashboard
 app_style = {

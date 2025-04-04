@@ -22,8 +22,8 @@ FoodPanda InsightPlate is an interactive dashboard that helps you make smarter f
 
 - 🗺️ **Interactive Map**: Explore restaurants across the Philippines
 - 📊 **Dynamic Charts**: Filter and analyze restaurant data in real-time
-- 🏷️ **Food Type Analysis**: Discover the most popular cuisines
-- ⭐ **Rating Distribution**: See how restaurants stack up
+- 🏷️ **Food Type Analysis**: Discover popular cuisines by city
+- ⭐ **Rating Distribution**: Analyze rating patterns
 - 🎨 **Modern UI**: Beautiful design with smooth animations
 
 ## 🛠️ Tech Stack
@@ -55,66 +55,55 @@ pip install -r requirements.txt
 python FinalCode.py
 ```
 
-## 📊 Dataset
+## 📊 Visualizations
 
-Our dataset includes 1,000+ restaurant reviews with juicy details:
-- 🏪 Store information
-- 🍽️ Food types
-- ⭐ Ratings
-- 📍 Locations
-- 👥 Reviewer counts
+### 1. Restaurant Distribution Map 🗺️
+- Interactive map showing restaurant locations across the Philippines
+- Color-coded by average ratings:
+  - 🟢 4.5+ (Excellent)
+  - 🟡 4.0-4.4 (Very Good)
+  - 🟠 3.5-3.9 (Good)
+  - 🔴 Below 3.5 (Average)
+- Bubble size indicates number of reviews
+- Click on locations to filter data
 
-## 📈 Visualizations
+### 2. Food Type Distribution 🍽️
+- Bar chart showing top 10 cuisines in the selected city
+- Interactive filtering by:
+  - City
+  - Rating range
+- Color intensity indicates popularity
+- Hover for detailed restaurant counts
 
-### 1. Restaurant Map View 🗺️
-![Map View](path-to-map-screenshot.png)
-- Interactive map showing restaurant locations
-- Color-coded by ratings
-- Size indicates number of reviews
+### 3. Rating Distribution 📈
+- Histogram showing rating distribution for:
+  - Selected city
+  - Chosen food type
+- Shows the spread of ratings across restaurants
+- Hover for detailed counts in each rating bracket
 
-### 2. Food Type Distribution 🍕
-![Food Types](path-to-food-types-screenshot.png)
-- Popular cuisines in each city
-- Interactive filtering
-- Trend analysis
+### 4. Quick Stats Dashboard 📊
+- Total number of restaurants in filtered selection
+- Average rating for filtered restaurants
+- Most common food type in selection
+- Updates dynamically with filters
 
-### 3. Rating Analysis ⭐
-![Ratings](path-to-ratings-screenshot.png)
-- Distribution of ratings
-- City-wise comparisons
-- Top performers
+## 🎯 Interactive Features
 
-## 🎯 Target Audience
+### 1. Dynamic Filters
+- **City Filter**: Focus on specific locations
+- **Food Type Filter**: Explore different cuisines
+- **Rating Range Filter**: Find top-rated restaurants
 
-### Primary Users 🍽️
-- Food delivery enthusiasts
-- Decision-making diners
-- Hungry researchers
+### 2. Real-time Updates
+- All visualizations update instantly when filters change
+- Smooth transitions between states
+- Responsive design for all screen sizes
 
-### Secondary Users 📊
-- Restaurant owners
-- Food industry analysts
-- Data science students
-
-## 🔍 Problem & Solution
-
-### The Problem 😫
-Too many reviews, too little time! Consumers struggle to make quick decisions with overwhelming text reviews.
-
-### Our Solution 🎉
-Transform complex data into beautiful, interactive visualizations that help you:
-- Find top-rated restaurants instantly
-- Discover popular food types in your area
-- Make informed decisions quickly
-
-## 🎨 Design Philosophy
-
-We follow a modern, clean design system:
-- 🌈 Gradient backgrounds
-- 🪟 Frosted glass effects
-- ✨ Smooth animations
-- 📱 Responsive layout
-- 🎨 Consistent color scheme
+### 3. Hover Interactions
+- Detailed tooltips on map markers
+- Restaurant counts on bar charts
+- Rating breakdowns on histograms
 
 ## 📚 Documentation
 
