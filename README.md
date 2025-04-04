@@ -7,11 +7,43 @@
 ![Plotly Version](https://img.shields.io/badge/plotly-5.13.1-orange)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-## 🎯 Project Overview
+## 🎯 About The Project
 
-FoodPanda InsightPlate is an interactive dashboard that helps you make smarter food delivery choices! We analyze thousands of restaurant reviews to serve you the most delicious insights. 
+FoodPanda InsightPlate is an interactive data visualization dashboard designed to enhance the food delivery experience in the Philippines. Our mission is to help consumers make informed dining decisions by providing clear, visual insights into restaurant performance across different cities.
+
+### 🎯 Motivation
+
+With the explosive growth of food delivery platforms, consumers often face decision paralysis when choosing where to order. We solve this by:
+
+- Visualizing restaurant ratings and popularity across cities
+- Making it easy to discover top-rated cuisines in any area
+- Helping users find hidden gems through advanced filtering
+
+
+### 👥 Target Users
+
+1. **Food Delivery Customers**
+   - Looking for highly-rated restaurants
+   - Exploring new cuisines in their area
+   - Comparing options across different locations
+
+2. **Restaurant Owners**
+   - Analyzing market performance
+   - Understanding customer preferences
+   - Identifying growth opportunities
+
+### 🔍 Problem Solution
+
+We address common food delivery challenges by:
+
+- Aggregating and visualizing thousands of customer reviews
+- Providing interactive filters for cuisine type and ratings
+- Offering clear geographical insights through our interactive map
+- Making data-driven decisions accessible through an intuitive interface
+
 
 ### 👥 Team Members
+
 - Carl Alamay
 - Nelle Basilio
 - Sean Columbres
@@ -36,14 +68,22 @@ FoodPanda InsightPlate is an interactive dashboard that helps you make smarter f
 ## 🚀 Quick Start
 
 ### Option 1: Google Colab (Recommended)
-1. Open our [Colab Notebook](link-to-your-colab)
-2. Click `Runtime` > `Run all`
-3. Choose your data option:
-   - Upload `restos (1).csv` and `restos_2025.csv` to merge
-   - Upload existing `FoodpandaCombo.csv`
-4. Explore the dashboard in a new tab! 🎉
+
+1. Open our [Interactive Dashboard Notebook](https://colab.research.google.com/drive/14JU08uudxqV2B6Ea_Oc9ZFwzwSKSHcMb) in Google Colab
+
+2. Run the first cell to install dependencies:
+
+   ```python
+   !pip install dash==2.9.3 dash-bootstrap-components==1.4.1 plotly==5.13.1 pandas==1.5.3 jupyter-dash==0.4.2
+   ```
+
+3. Restart the runtime (Runtime > Restart runtime)
+4. Run all cells (Runtime > Run all)
+5. Upload your data files when prompted
+6. Explore the dashboard in a new tab! 🎉
 
 ### Option 2: Local Development
+
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/foodpanda-insightplate.git
