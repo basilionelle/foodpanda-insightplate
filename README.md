@@ -2,10 +2,10 @@
 
 > Transform raw restaurant data into delicious insights! 🚀
 
-![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
-![Dash Version](https://img.shields.io/badge/dash-2.9.3-brightgreen)
-![Plotly Version](https://img.shields.io/badge/plotly-5.13.1-orange)
-![License](https://img.shields.io/badge/license-MIT-green)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/downloads/)
+[![Jupyter](https://img.shields.io/badge/Jupyter-%23FA0F00.svg?style=flat&logo=jupyter&logoColor=white)](https://jupyter.org/)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ## 🎯 About The Project
 
@@ -42,13 +42,7 @@ We address common food delivery challenges by:
 - Making data-driven decisions accessible through an intuitive interface
 
 
-### 👥 Team Members
 
-- Carl Alamay
-- Nelle Basilio
-- Sean Columbres
-- Reever Lacson
-- Josh Ng
 
 ## 🌟 Features
 
@@ -60,27 +54,34 @@ We address common food delivery challenges by:
 
 ## 🛠️ Tech Stack
 
-- **Python**: The core programming language
-- **Dash & Plotly**: For creating interactive visualizations
-- **Pandas**: For data manipulation and analysis
-- **Google Colab**: For easy deployment and sharing
+- **Python**: Core programming language
+- **Pandas**: Data manipulation and analysis
+- **Matplotlib**: Static visualizations
+- **Seaborn**: Statistical visualizations
+- **Jupyter**: Interactive notebook environment
+- **Google Colab**: Cloud deployment and sharing
 
 ## 🚀 Quick Start
 
 ### Option 1: Google Colab (Recommended)
 
-1. Open our [Interactive Dashboard Notebook](https://colab.research.google.com/drive/14JU08uudxqV2B6Ea_Oc9ZFwzwSKSHcMb) in Google Colab
+1. Open the notebook in Google Colab by clicking the badge above
+2. Upload the data files when prompted:
+   - `restos.csv`
+   - `restos_2025.csv`
+3. Run all cells sequentially
+4. Explore the interactive visualizations! 🎉
 
-2. Run the first cell to install dependencies:
+<details>
+<summary>📝 Quick Data Preview</summary>
 
-   ```python
-   !pip install dash==2.9.3 dash-bootstrap-components==1.4.1 plotly==5.13.1 pandas==1.5.3 jupyter-dash==0.4.2
-   ```
-
-3. Restart the runtime (Runtime > Restart runtime)
-4. Run all cells (Runtime > Run all)
-5. Upload your data files when prompted
-6. Explore the dashboard in a new tab! 🎉
+```python
+# Load and peek at the data
+import pandas as pd
+df = pd.read_csv('restos.csv')
+print(df.head())
+```
+</details>
 
 ### Option 2: Local Development
 
@@ -88,12 +89,24 @@ We address common food delivery challenges by:
 # Clone the repository
 git clone https://github.com/yourusername/foodpanda-insightplate.git
 
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+
 # Install dependencies
 pip install -r requirements.txt
 
-# Run the dashboard
-python FinalCode.py
+# Launch Jupyter
+jupyter notebook Final-InsightPlate.ipynb
 ```
+
+<details>
+<summary>🔧 Troubleshooting Tips</summary>
+
+- If you see `ModuleNotFoundError`, run: `pip install -r requirements.txt`
+- For visualization issues, try: `pip install --upgrade matplotlib seaborn`
+- Jupyter not starting? Check: `jupyter --version`
+</details>
 
 ## 📊 Visualizations
 
