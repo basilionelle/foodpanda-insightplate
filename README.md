@@ -75,6 +75,10 @@ We make your food ordering experience better by:
 3. Run all cells sequentially
 4. Explore the interactive visualizations! 🎉
 
+### CANVA PPT 
+
+https://www.canva.com/design/DAGjqxCYYPQ/Jj4D43aY-VJQKeBTo468YQ/edit
+
 **Quick Start:**
 
 ```python
